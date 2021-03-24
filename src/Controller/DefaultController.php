@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Chantiers;
 use App\Entity\Users;
+use App\Form\ChantiersFormType;
 use App\Form\UsersFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -92,6 +94,79 @@ class DefaultController extends AbstractController
         $delManager->flush();
 
         return $this->redirectToRoute("users");
+    }
+
+    /**
+     * @Route("/chantiers", name="chantiers")
+     * @param Request $request
+     * @return Response
+     */
+    public function displayChantiers(Request $request): Response
+    {
+        $entity = new chantiers();
+
+        $form = $this->createForm(ChantiersFormType::class, $entity);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $addManager = $this->getDoctrine()->getManager();
+            $addManager->persist($entity);
+            $addManager->flush();
+
+            return $this->redirectToRoute("chantiers");
+        }
+
+        $chantiers = $this->getDoctrine()->getRepository(Chantiers::class)->findAll();
+
+        return $this->render('chantiers.html.twig', [
+            'formChantiers' => $form->createView(),
+            'chantiers' => $chantiers,
+        ]);
+    }
+
+    /**
+     * @Route("/chantieredit/{id}", name="editChantier")
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function editChantier(Request $request, int $id): Response
+    {
+        $editManager = $this->getDoctrine()->getManager();
+
+        $chantier = $editManager->getRepository(Chantiers::class)->find($id);
+        $form = $this->createForm(ChantiersFormType::class, $chantier);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $editManager->flush();
+
+            return $this->redirectToRoute("chantiers");
+        }
+
+        return $this->render("chantiers-edit.html.twig", [
+            "formChantier" => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/delchantier/{id}", name="delChantier")
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function delChantier(Request $request, int $id): Response
+    {
+        $delManager = $this->getDoctrine()->getManager();
+
+        $chantier = $delManager->getRepository(Chantiers::class)->find($id);
+        $delManager->remove($chantier);
+        $delManager->flush();
+
+        return $this->redirectToRoute("chantiers");
     }
 
 }

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des chantiers{% endblock %}
+
+{% block body %}
+<style>
+
+</style>
+
+    <h1>Ajouter un chantier</h1>
+
+{{ form(formChantiers) }}
+
+    <h1>Liste des chantiers</h1>
+
+        <table>
+            <thead>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Adresse</th>
+                <th>Date de début</th>
+                <th></th>
+                <th></th>
+            </thead>
+            <tbody>
+            {% for chantier in chantiers %}
+                <tr>
+                    <td>{{ chantier.id }}</td>
+                    <td>{{ chantier.nom }}</td>
+                    <td>{{ chantier.adresse }}</td>
+                    <td>{{ chantier.debut|date('d/m/Y') }}</td>
+                    <td><a href="{{ path('editChantier', {'id': chantier.id}) }}">Modifier</a></td>
+                    <td><a href="{{ path('delChantier', {'id': chantier.id}) }}">Supprimer</a></td>
+                </tr>
+            {% else %} <tr><td colspan="6">Aucun chantier trouvé.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+
+{% endblock %}
