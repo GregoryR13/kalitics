@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des pointages{% endblock %}
+
+{% block body %}
+<style>
+
+</style>
+
+    <h1>Ajouter un pointage</h1>
+
+{{ form(formPointages) }}
+
+    <h1>Liste des pointages</h1>
+
+        <table>
+            <thead>
+                <th>ID</th>
+                <th>Nom de l'utilisateur</th>
+                <th>Chantier</th>
+                <th>Date du pointage</th>
+                <th>Durée du pointage</th>
+                <th></th>
+                <th></th>
+            </thead>
+            <tbody>
+            {% for pointage in pointages %}
+                <tr>
+                    <td>{{ pointage.id }}</td>
+                    <td>{{ pointage.userId.identite }}</td>
+                    <td>{{ pointage.chantierId.nom }}</td>
+                    <td>{{ pointage.datePointage|date('d/m/Y') }}</td>
+                    <td>{{ pointage.dureePointage|date('H:i') }}</td>
+                    <td><a href="{{ path('editPointage', {'id': pointage.id}) }}">Modifier</a></td>
+                    <td><a href="{{ path('delPointage', {'id': pointage.id}) }}">Supprimer</a></td>
+                </tr>
+            {% else %} <tr><td colspan="7">Aucun pointage trouvé.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+
+{% endblock %}

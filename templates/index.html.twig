@@ -9,13 +9,13 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>Hello! ✅</h1>
 
-    This friendly message is coming from:
+    Choisissez une action :
     <ul>
         <li><a href="{{ path('users') }}">Gérer les utilisateurs</a></li>
         <li><a href="{{ path('chantiers') }}">Gérer les chantiers</a></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/symfony/kalitics/templates/default/index.html.twig'|file_link(0) }}">templates/default/index.html.twig</a></code></li>
+        <li><a href="{{ path('pointages') }}">Gérer les pointages</a></li>
     </ul>
 </div>
 {% endblock %}

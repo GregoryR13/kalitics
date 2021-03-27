@@ -14,6 +14,7 @@ class Users
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ORM\OneToMany(targetEntity="App\Entity\Pointages", mappedBy="userId")
      */
     private $id;
 
@@ -71,5 +72,10 @@ class Users
         $this->matricule = $matricule;
 
         return $this;
+    }
+
+    public function getIdentite()
+    {
+        return $this->nom . ' ' . $this->prenom;
     }
 }

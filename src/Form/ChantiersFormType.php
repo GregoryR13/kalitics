@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Chantiers;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +16,12 @@ class ChantiersFormType extends AbstractType
         $builder
             ->add('nom')
             ->add('adresse')
-            ->add('debut')
+            ->add('debut', DateType::class, [
+                'placeholder' => [
+                    'year' => 'Année', 'month' => 'Mois', 'day' => 'Jour',
+                ],
+                'format' => 'dd / MM / yyyy',
+            ])
             ->add('submit', SubmitType::class)
         ;
     }

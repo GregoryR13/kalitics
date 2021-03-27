@@ -14,6 +14,7 @@ class Chantiers
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ORM\OneToMany(targetEntity="App\Entity\Pointages", mappedBy="chantierId")
      */
     private $id;
 
