@@ -19,6 +19,8 @@
                 <th>Nom</th>
                 <th>Adresse</th>
                 <th>Date de début</th>
+                <th>Nb de personnes</th>
+                <th>Durée cumulée</th>
                 <th></th>
                 <th></th>
             </thead>
@@ -29,10 +31,22 @@
                     <td>{{ chantier.nom }}</td>
                     <td>{{ chantier.adresse }}</td>
                     <td>{{ chantier.debut|date('d/m/Y') }}</td>
+                    <td>{% if pointersByChantier[chantier.id] is defined %}
+                            {{ pointersByChantier[chantier.id] }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </td>
+                    <td>{% if dureesByChantier[chantier.id] is defined %}
+                            {{ dureesByChantier[chantier.id]|slice(0, 5) }}
+                        {% else %}
+                            00:00
+                        {% endif %}
+                    </td>
                     <td><a href="{{ path('editChantier', {'id': chantier.id}) }}">Modifier</a></td>
                     <td><a href="{{ path('delChantier', {'id': chantier.id}) }}">Supprimer</a></td>
                 </tr>
-            {% else %} <tr><td colspan="6">Aucun chantier trouvé.</td></tr>
+            {% else %} <tr><td colspan="8">Aucun chantier trouvé.</td></tr>
             {% endfor %}
             </tbody>
         </table>

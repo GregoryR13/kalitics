@@ -11,10 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Chantiers
 {
     /**
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @ORM\OneToMany(targetEntity="App\Entity\Pointages", mappedBy="chantierId")
      */
     private $id;
 

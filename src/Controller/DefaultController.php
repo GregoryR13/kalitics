@@ -122,10 +122,14 @@ class DefaultController extends AbstractController
         }
 
         $chantiers = $this->getDoctrine()->getRepository(Chantiers::class)->findAll();
+        $pointersByChantier =  $this->getDoctrine()->getRepository(Pointages::class)->findPointersDistinctByChantier();
+        $dureesByChantier = $this->getDoctrine()->getRepository(Pointages::class)->findDureeCumuleeByChantier();
 
         return $this->render('chantiers.html.twig', [
             'formChantiers' => $form->createView(),
             'chantiers' => $chantiers,
+            'pointersByChantier' => $pointersByChantier,
+            'dureesByChantier' => $dureesByChantier
         ]);
     }
 

@@ -18,13 +18,13 @@ class Pointages
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Users")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $userId;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Chantiers", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Chantiers")
      * @ORM\JoinColumn(name="chantier_id", referencedColumnName="id")
      */
     private $chantierId;

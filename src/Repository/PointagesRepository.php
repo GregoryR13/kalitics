@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Pointages;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Driver\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +20,40 @@ class PointagesRepository extends ServiceEntityRepository
         parent::__construct($registry, Pointages::class);
     }
 
-    // /**
-    //  * @return Pointages[] Returns an array of Pointages objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findPointersDistinctByChantier()
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('p');
+        $chantiers = $qb
+                    ->select('c.id', $qb->expr()->countDistinct('p.userId'))
+                    ->join('p.chantierId', 'c')
+                    ->groupBy('c.id')
+                    ->getQuery()
+                    ->getResult()
+                    ;
+        foreach ($chantiers as $chantier) {
+            $data[$chantier['id']] = $chantier[1];
+        }
 
-    /*
-    public function findOneBySomeField($value): ?Pointages
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $data;
     }
-    */
+
+    public function findDureeCumuleeByChantier()
+    {
+        $sql = "select c.id as id, 
+                       SEC_TO_TIME( SUM( TIME_TO_SEC( duree_pointage ) ) ) as duree
+                from pointages as p
+                LEFT JOIN chantiers as c
+                    ON c.id = p.chantier_id
+                GROUP BY c.id";
+        $chantiers = $this->_em->getConnection()
+                            ->executeQuery($sql)
+                            ->fetchAll(\PDO::FETCH_ASSOC);
+
+        foreach ($chantiers as $chantier) {
+            $data[$chantier['id']] = $chantier['duree'];
+        }
+
+        return $data;
+    }
+
 }
