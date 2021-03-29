@@ -9,7 +9,8 @@
 
     <h1>Ajouter un pointage</h1>
 
-    <div id="erreurForm"></div>
+    <div id="erreurFormDbl"></div>
+    <div id="erreurForm35h"></div>
 
 {{ form(formPointages) }}
 
@@ -55,7 +56,7 @@ $( document ).ready(function() {
 
         $('select').on('change', function() {
             let el = this;
-            $('#erreurForm').html('');
+            $('#pointages_form>ul').remove();
 
             let user = $('#pointages_form_userId').val();
             let chantier = $('#pointages_form_chantierId').val();
@@ -96,7 +97,12 @@ function checkPointageDoublon(user, chantier, date) {
                 timeout: 20000,
                 success: function(result) {
                     if(result) {
-                        $('#erreurForm').html('Cet utilisateur a déjà été pointé sur ce chantier pour cette journée.');
+                        $('#erreurFormDbl').html('Cet utilisateur a déjà été pointé sur ce chantier pour cette journée.');
+                        $("#pointages_form_submit"). attr("disabled", true);
+                    }
+                    else {
+                        $('#erreurFormDbl').html('')
+                        if($('#erreurForm35h').html() === '') $("#pointages_form_submit"). attr("disabled", false);
                     }
                 },
                 error: function(){
@@ -115,7 +121,12 @@ function checkPointage35h(user, date, duree) {
         timeout: 20000,
         success: function(result) {
             if(result) {
-                $('#erreurForm').html('Cet utilisateur ne peut pas dépasser les 35H pour cette semaine');
+                $('#erreurForm35h').html('Cet utilisateur ne peut pas dépasser les 35H pour cette semaine');
+                $("#pointages_form_submit"). attr("disabled", true);
+            }
+            else {
+                $('#erreurForm35h').html('');
+                if($('#erreurFormDbl').html() === '') $("#pointages_form_submit"). attr("disabled", false);
             }
         },
         error: function(){

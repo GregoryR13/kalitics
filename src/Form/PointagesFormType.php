@@ -7,6 +7,7 @@ use App\Entity\Pointages;
 use App\Entity\Users;
 use App\Repository\ChantiersRepository;
 use App\Repository\UsersRepository;
+use App\Validator\Constraints\PointagesConstraint;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -65,6 +66,15 @@ class PointagesFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Pointages::class,
+            'constraints' => [
+                new PointagesConstraint(/*[
+                    'notBlankDateMessage'    => 'test',
+                    'notBlankPeriodeMessage' => $this->translator->trans('salarie.demande.form.fail-blank-periode'),
+                    'startToCloseMessage'    => $this->translator->trans('salarie.demande.form.fail-prevenance'),
+                    'tooLongMessage'         => $this->translator->trans('salarie.demande.form.fail-consecutif'),
+                    'overlapMessage'         => $this->translator->trans('salarie.demande.form.fail-chevauchement'),
+                ]*/),
+            ]
         ]);
     }
 }
