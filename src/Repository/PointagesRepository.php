@@ -39,12 +39,13 @@ class PointagesRepository extends ServiceEntityRepository
 
     public function findDureeCumuleeByChantier()
     {
-        $sql = "select c.id as id, 
+        $sql = "SELECT c.id as id, 
                        SEC_TO_TIME( SUM( TIME_TO_SEC( duree_pointage ) ) ) as duree
-                from pointages as p
+                FROM pointages as p
                 LEFT JOIN chantiers as c
                     ON c.id = p.chantier_id
                 GROUP BY c.id";
+
         $chantiers = $this->_em->getConnection()
                             ->executeQuery($sql)
                             ->fetchAll(\PDO::FETCH_ASSOC);
@@ -54,6 +55,48 @@ class PointagesRepository extends ServiceEntityRepository
         }
 
         return $data;
+    }
+
+    public function findUserByDateAndChantier($user, $chantier, $date)
+    {
+        $sql = "SELECT id
+                FROM pointages as p
+                WHERE 1
+                    AND user_id = :user
+                    AND chantier_id = :chantier
+                    AND date_pointage = :date
+                ";
+
+        $req = $this->_em->getConnection()->prepare($sql);
+        $req->execute([
+             'user' => $user
+            ,'chantier' => $chantier
+            ,'date' => $date
+        ]);
+
+        return $req->rowCount();
+    }
+
+    public function findDureeByUserAndSemaine($user, $date, $duree) {
+
+        $sql = "SELECT SUM( TIME_TO_SEC( duree_pointage ) ) + TIME_TO_SEC(:duree) as duree_sec
+                FROM pointages as p
+                WHERE 1
+                    AND user_id = :user
+                    AND WEEK(date_pointage) = WEEK(:date)
+                ";
+
+        $req = $this->_em->getConnection()->prepare($sql);
+        $req->execute([
+             'user' => $user
+            ,'date' => $date
+            ,'duree' => $duree
+        ]);
+
+        $seconds = $req->fetchOne();
+
+        return $seconds > 126000; //35H
+
     }
 
 }

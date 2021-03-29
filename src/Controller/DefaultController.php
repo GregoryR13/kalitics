@@ -10,6 +10,7 @@ use App\Form\PointagesFormType;
 use App\Form\UsersFormType;
 use App\Repository\PointagesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -198,7 +199,6 @@ class DefaultController extends AbstractController
             return $this->redirectToRoute("pointages");
         }
 
-        //dd($this->getDoctrine()->getRepository(Pointages::class)->findAllByJointure());
         $pointages = $this->getDoctrine()->getRepository(Pointages::class)->findAll();
 
         return $this->render('pointages.html.twig', [
@@ -248,6 +248,50 @@ class DefaultController extends AbstractController
         $delManager->flush();
 
         return $this->redirectToRoute("pointages");
+    }
+
+    /**
+     * @Route("/checkpointagedoublon", name="checkPointageDoublon")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function checkPointageDoublon(Request $request)
+    {
+        $result = 0;
+
+        if($request->isXmlHttpRequest())
+        {
+            $user = $request->request->get('user');
+            $date = $request->request->get('date');
+            $chantier = $request->request->get('chantier');
+
+            $result = $this->getDoctrine()->getRepository(Pointages::class)
+                                          ->findUserByDateAndChantier($user, $chantier, $date);
+        }
+
+        return JsonResponse::create((bool) $result);
+    }
+
+    /**
+     * @Route("/checkpointage35h", name="checkPointage35h")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function checkPointage35h(Request $request)
+    {
+        $result = 0;
+
+        if($request->isXmlHttpRequest())
+        {
+            $user = $request->request->get('user');
+            $date = $request->request->get('date');
+            $duree = $request->request->get('duree');
+
+            $result = $this->getDoctrine()->getRepository(Pointages::class)
+                ->findDureeByUserAndSemaine($user, $date, $duree);
+        }
+
+        return JsonResponse::create((bool) $result);
     }
 
 }

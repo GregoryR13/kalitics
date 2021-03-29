@@ -9,6 +9,8 @@
 
     <h1>Ajouter un pointage</h1>
 
+    <div id="erreurForm"></div>
+
 {{ form(formPointages) }}
 
     <h1>Liste des pointages</h1>
@@ -39,6 +41,91 @@
             </tbody>
         </table>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
 
 
+$( document ).ready(function() {
+
+        $('select').on('change', function() {
+            let el = this;
+            $('#erreurForm').html('');
+
+            let user = $('#pointages_form_userId').val();
+            let chantier = $('#pointages_form_chantierId').val();
+
+            let year = $('#pointages_form_datePointage_year').val();
+            let month = ("0" + $('#pointages_form_datePointage_month').val()).slice(-2);
+            let day = ("0" + $('#pointages_form_datePointage_day').val()).slice(-2);
+            let date = year+'-'+month+'-'+day;
+
+            let hour = ("0" + $('#pointages_form_dureePointage_hour').val()).slice(-2);
+            let minute = ("0" + $('#pointages_form_dureePointage_minute').val()).slice(-2);
+            let duree = hour+':'+minute;
+
+            if(el.parentElement.id !== 'pointages_form_dureePointage'
+                && user > 0
+                && chantier > 0
+                && date.length === 10) {
+                    checkPointageDoublon(user, chantier, date);
+            }
+
+            if(el.id !== 'pointages_form_chantierId'
+                && user > 0
+                && date.length === 10
+                && duree.length === 5) {
+                    checkPointage35h(user, date, duree);
+            }
+
+        });
+
+});
+
+function checkPointageDoublon(user, chantier, date) {
+
+    $.ajax({
+                url: '{{ path('checkPointageDoublon') }}',
+                method: 'POST',
+                data: { user:user, chantier:chantier, date:date },
+                timeout: 20000,
+                success: function(result) {
+                    if(result) {
+                        $('#erreurForm').html('Cet utilisateur a déjà été pointé sur ce chantier pour cette journée.');
+                    }
+                },
+                error: function(){
+                    window.location.reload();
+                }
+            });
+
+}
+
+function checkPointage35h(user, date, duree) {
+
+    $.ajax({
+        url: '{{ path('checkPointage35h') }}',
+        method: 'POST',
+        data: { user:user, date:date, duree:duree },
+        timeout: 20000,
+        success: function(result) {
+            if(result) {
+                $('#erreurForm').html('Cet utilisateur ne peut pas dépasser les 35H pour cette semaine');
+            }
+        },
+        error: function(){
+            window.location.reload();
+        }
+    });
+
+}
+
+
+
+    </script>
 {% endblock %}
