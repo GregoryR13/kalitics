@@ -34,7 +34,7 @@ class PointagesRepository extends ServiceEntityRepository
             $data[$chantier['id']] = $chantier[1];
         }
 
-        return $data;
+        return $data??null;
     }
 
     public function findDureeCumuleeByChantier()
@@ -54,7 +54,7 @@ class PointagesRepository extends ServiceEntityRepository
             $data[$chantier['id']] = $chantier['duree'];
         }
 
-        return $data;
+        return $data??null;
     }
 
     public function findUserByDateAndChantier($user, $chantier, $date)
