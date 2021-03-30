@@ -17,12 +17,15 @@ class ChantiersFormType extends AbstractType
             ->add('nom')
             ->add('adresse')
             ->add('debut', DateType::class, [
+                'label' => 'Date de début',
                 'placeholder' => [
                     'year' => 'Année', 'month' => 'Mois', 'day' => 'Jour',
                 ],
                 'format' => 'dd / MM / yyyy',
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => 'Valider'
+            ])
         ;
     }
 

@@ -1,5 +1,17 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style>
+
+        #pointages_form_datePointage select, #pointages_form_dureePointage select {
+            max-width:10%;
+        }
+
+    </style>
+{% endblock %}
+
 {% block title %}Gestion des pointages{% endblock %}
 
 {% block body %}

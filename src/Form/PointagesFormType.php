@@ -35,14 +35,14 @@ class PointagesFormType extends AbstractType
 
             ->add('userId',  EntityType::class, [
                 'label' => 'Utilisateurs',
-                'placeholder'  => 'Choisissez un utilisateur',
+                'placeholder'  => 'Choisisr un utilisateur',
                 'class' => Users::class,
                 'choice_label' => 'identite',
             ])
 
            ->add('chantierId',  EntityType::class, [
                'label' => 'Chantier',
-               'placeholder'  => 'Choisissez un chantier',
+               'placeholder'  => 'Choisir un chantier',
                'class' => Chantiers::class,
                'choice_label' => 'nom',
            ])
@@ -58,7 +58,9 @@ class PointagesFormType extends AbstractType
                     'hour' => 'Heures', 'minute' => 'Minutes',
                 ],
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => 'Valider'
+            ])
         ;
     }
 

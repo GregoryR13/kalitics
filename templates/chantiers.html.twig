@@ -1,5 +1,17 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style>
+
+        #chantiers_form_debut select {
+            max-width:10%;
+        }
+
+    </style>
+{% endblock %}
+
 {% block title %}Gestion des chantiers{% endblock %}
 
 {% block body %}
