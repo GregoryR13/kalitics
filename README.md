@@ -1,10 +1,10 @@
 # kalitics
 Exercice de développement Symfony4
 ## Table des matières
-* [Informations générales](#informations-gnrales)
+* [Informations générales](#informations-générales)
 * [Technologies](#technologies)
 * [Installation](#installation)
-* [Démarrage](#dmarrage)
+* [Démarrage](#démarrage)
 * [Versions](#versions)
 * [Auteur](#auteur)
 
