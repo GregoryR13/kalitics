@@ -50,7 +50,7 @@ php bin/console doctrine:migration:migrate
 
 ## Démarrage
 
-Une fois sur l'application, il ne vous reste plus qu'à aller sur ``/kalitics/public/``.
+Pour lancer l'application, il ne vous reste plus qu'à vous diriger sur ``/kalitics/public/``.
 
 ## Versions
 
